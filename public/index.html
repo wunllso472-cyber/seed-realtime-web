@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Seed 实时音视频</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%278%27 fill=%27%234f7cff%27/%3E%3Ccircle cx=%2716%27 cy=%2716%27 r=%277%27 fill=%27white%27/%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo">◉</span>
+      <div>
+        <h1>Seed 实时音视频</h1>
+        <p class="sub">豆包端到端实时音视频通话 · Seed-Realtime</p>
+      </div>
+    </div>
+    <div class="top-right">
+      <span id="status" class="pill pill-idle">未连接</span>
+      <a class="btn btn-ghost" href="/settings.html">⚙ 模型设置</a>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section class="stage-col">
+      <div class="stage" id="stage">
+        <video id="preview" autoplay playsinline muted></video>
+        <img id="previewImg" alt="" />
+        <div class="stage-empty" id="stageEmpty">
+          <div class="orb" id="orb"></div>
+          <p id="stageHint">点击「开始通话」，与模型进行语音 + 画面对话</p>
+        </div>
+        <div class="stage-badges">
+          <span class="badge" id="videoBadge">视频：关闭</span>
+          <span class="badge" id="fpsBadge" hidden></span>
+        </div>
+      </div>
+
+      <div class="meter-row">
+        <span class="meter-label">麦克风</span>
+        <div class="meter"><div class="meter-fill" id="meterFill"></div><div class="meter-zone"></div></div>
+        <span class="meter-val" id="meterVal">-∞ dBFS</span>
+      </div>
+
+      <div class="controls">
+        <button class="btn btn-primary btn-lg" id="btnCall">开始通话</button>
+        <button class="btn" id="btnMute" disabled>🎙 静音</button>
+        <label class="select-wrap">
+          <span>画面</span>
+          <select id="videoSource">
+            <option value="camera">摄像头</option>
+            <option value="screen">屏幕共享</option>
+            <option value="file">本地视频/图片…</option>
+            <option value="none">关闭</option>
+          </select>
+        </label>
+        <input type="file" id="mediaFile" accept="video/*,image/*" hidden />
+        <button class="btn" id="btnHello" disabled title="speech_text_buffer.commit">👋 打招呼</button>
+        <button class="btn" id="btnCancel" disabled title="response.cancel">✋ 打断</button>
+        <button class="btn" id="btnCommit" disabled title="input_audio_buffer.commit">⏹ 强制判停</button>
+      </div>
+
+      <div class="meta">
+        <div><span>X-Tt-Logid</span><code id="logid">—</code></div>
+        <div><span>Session ID</span><code id="sessionId">—</code></div>
+        <div><span>模型 / 音色</span><code id="modelInfo">—</code></div>
+      </div>
+    </section>
+
+    <section class="side-col">
+      <div class="tabs">
+        <button class="tab active" data-tab="chat">对话</button>
+        <button class="tab" data-tab="log">事件日志</button>
+      </div>
+
+      <div class="panel" id="panel-chat">
+        <div class="chat" id="chat">
+          <div class="chat-empty">对话字幕会显示在这里</div>
+        </div>
+        <div class="usage" id="usage" hidden></div>
+      </div>
+
+      <div class="panel" id="panel-log" hidden>
+        <div class="log-tools">
+          <label><input type="checkbox" id="logAudio" /> 显示音频/图像帧事件</label>
+          <button class="btn btn-sm" id="btnClearLog">清空</button>
+        </div>
+        <div class="log" id="log"></div>
+        <div class="raw-send">
+          <textarea id="rawEvent" rows="3" spellcheck="false" placeholder='发送原始上行事件，例如 {"type":"response.cancel"}'></textarea>
+          <button class="btn btn-sm" id="btnRaw" disabled>发送</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="toast" id="toast" hidden></div>
+  <script type="module" src="/js/app.js"></script>
+</body>
+</html>

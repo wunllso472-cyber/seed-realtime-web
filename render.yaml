@@ -1,0 +1,23 @@
+# Render Blueprint：在 Render 控制台 New → Blueprint 选择本仓库即可一键部署。
+# 部署后地址形如 https://seed-realtime-proxy.onrender.com，眼镜端填 wss://<同一域名>/ws
+services:
+  - type: web
+    name: seed-realtime-proxy
+    runtime: node
+    region: singapore        # 离国内最近的 Render 区域
+    plan: free               # 免费档 15 分钟无访问会休眠；正式使用建议改为 starter
+    buildCommand: npm ci
+    startCommand: npm start
+    healthCheckPath: /healthz
+    autoDeploy: true
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: HOST
+        value: 0.0.0.0       # 必须监听所有网卡，Render 才能转发进来
+      - key: HTTPS
+        value: "0"           # TLS 由 Render 负责，服务本身跑 HTTP
+      - key: SEED_API_KEY
+        sync: false          # 首次部署时在控制台手动填写，不进仓库
+      - key: PROXY_TOKEN
+        generateValue: true  # 自动生成随机口令；到控制台 Environment 里复制给眼镜端 config.js

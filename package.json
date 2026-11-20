@@ -1,0 +1,14 @@
+{
+  "name": "seed-realtime-web",
+  "version": "1.0.0",
+  "description": "豆包 Seed-Realtime 端到端实时音视频通话 Web 应用",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "cert": "node scripts/gen-cert.mjs"
+  },
+  "dependencies": {
+    "ws": "^8.18.0"
+  }
+}
